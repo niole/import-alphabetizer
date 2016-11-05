@@ -1,3 +1,5 @@
+var util = require('../importUtil');
+
 function shuffleArray(a, tmp, index) {
   var newIndex = Math.floor(Math.random()*a.length);
   if (index === a.length) {

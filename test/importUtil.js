@@ -2,7 +2,9 @@ var assert = require('assert');
 var util = require('../importUtil');
 var testUtil = require('./testUtil');
 
+
 describe("importUtil", function() {
+
   var code = [
     "                         ",
     "function lmnop(a, b, c) { ",
@@ -13,6 +15,7 @@ describe("importUtil", function() {
     "var y = 1+2;",
     "                         ",
   ];
+
   var requires = [];
   var imports = [];
 
@@ -32,6 +35,42 @@ describe("importUtil", function() {
       "import i from './idfm';",
       "import pop from 'nioleimport';",
     ];
+  });
+
+  describe("#separateImports", function() {
+
+    it('should have imports section with only imports', function() {
+      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
+      var actual = util.separateImports(file);
+
+      assert(testUtil.containsOnlyImports(actual.imports, imports.length), "imports should not contain anything besides");
+      assert(!testUtil.containsRequires(actual.imports), "imports should not be requires");
+    });
+
+    it('should separate out code, imports, and requires', function() {
+      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
+      var actual = util.separateImports(file);
+
+      assert(!!actual.imports, "should contain imports section");
+      assert(!!actual.requires, "should contain imports requires");
+      assert(!!actual.code, "should contain imports code");
+    });
+
+    it('should have requires section with only requires', function() {
+      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
+      var output = util.separateImports(file);
+
+      assert(testUtil.containsOnlyRequires(output.requires, requires.length), "requires should not contain anything besides");
+      assert(!testUtil.containsImports(output.requires), "requires should not be imports");
+    });
+
+    it('should have code section with only code', function() {
+      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
+      var output = util.separateImports(file);
+
+      assert(!testUtil.containsImports(output.code), "code should not be imports");
+      assert(!testUtil.containsRequires(output.code), "code should not be requires");
+    });
   });
 
   describe("#sortDependencies", function() {
@@ -64,42 +103,5 @@ describe("importUtil", function() {
     });
   });
 
-  describe("#separateImports", function() {
-    it('should separate out code, imports, and requires', function() {
-      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
-      var actual = util.separateImports(file);
 
-      assert(!!actual.imports, "should contain imports section");
-      assert(!!actual.requires, "should contain imports requires");
-      assert(!!actual.code, "should contain imports code");
-    });
-
-    it('should have imports section with only imports', function() {
-      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
-      var output = util.separateImports(file);
-      var imports = output.imports;
-
-      assert(testUtil.containsOnlyImports(imports, imports.length), "imports should not contain anything besides");
-      assert(!testUtil.containsRequires(imports), "imports should not be requires");
-    });
-
-    it('should have requires section with only requires', function() {
-      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
-      var output = util.separateImports(file);
-      var requires = output.requires;
-
-      assert(testUtil.containsOnlyRequires(requires, requires.length), "requires should not contain anything besides");
-      assert(!testUtil.containsImports(requires), "requires should not be imports");
-    });
-
-    it('should have code section with only code', function() {
-      var file = testUtil.shuffleArray(code.concat(imports, requires), [], 0);
-      var output = util.separateImports(file);
-      var code = output.code;
-
-      assert(!testUtil.containsImports(code), "code should not be imports");
-      assert(!testUtil.containsRequires(code), "code should not be requires");
-    });
-
-  });
 });
