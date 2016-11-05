@@ -1,0 +1,19 @@
+{
+  "name": "alphabetizeimports",
+  "version": "1.0.0",
+  "description": "sorts your imports",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mocha": "^3.1.2",
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-middleware": "^1.5.1"
+  }
+}
