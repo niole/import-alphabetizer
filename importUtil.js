@@ -4,17 +4,17 @@ var NEW_LINE_CHR = constants.NEW_LINE_CHR;
 var REQUIRE_PATTERN = constants.REQUIRE_PATTERN;
 var IMPORT_PATTERN = constants.IMPORT_PATTERN;
 
-var GET_PATH_PATTERN = /\/([a-zA-Z0-9]*)/i;
-var GET_SINGLE_QUOTE_PATH_PATTERN = /'([a-zA-Z0-9]*)'/i;
-var GET_DOUBLE_QUOTE_PATH_PATTERN = /"([a-zA-Z0-9]*)"/i;
+var GET_PATH_PATTERN = constants.GET_PATH_PATTERN
+var GET_SINGLE_QUOTE_PATH_PATTERN = constants.GET_SINGLE_QUOTE_PATH_PATTERN;
+var GET_DOUBLE_QUOTE_PATH_PATTERN = constants.GET_DOUBLE_QUOTE_PATH_PATTERN;
 
 
 function isImport(element) {
-  return element.indexOf(IMPORT_PATTERN) > -1;
+  return IMPORT_PATTERN.test(element);
 }
 
 function isRequire(element) {
-  return element.indexOf(REQUIRE_PATTERN) > -1;
+  return REQUIRE_PATTERN.test(element);
 }
 
 function getPathContent(acc, s) {
@@ -76,6 +76,9 @@ function separateImports(lines) {
 
 var importUtil = {
   sortDependencies: sortDependencies,
+  separateImports: separateImports,
+  isImport: isImport,
+  isRequire: isRequire,
 };
 
 module.exports = importUtil;
