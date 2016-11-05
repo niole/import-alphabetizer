@@ -29,12 +29,22 @@ describe("alphabetizeImports", function() {
     assert(util.isImport(firstLine), "first line should be an import");
   });
 
-  it('should sort everything appropriately', function() {
-    for (var i=0; i<10; i++) {
+  it('should sort everything appropriately - 1', function() {
       var actual = importAlphabetizer(file);
       var lines = actual.split(NEW_LINE_CHR);
       assert(testUtil.linesAreSorted(lines), "importAlphabetizer should sort dependencies correctly. output: " + actual);
-    }
+  });
+
+  it('should sort everything appropriately - 2', function() {
+      var actual = importAlphabetizer(file);
+      var lines = actual.split(NEW_LINE_CHR);
+      assert(testUtil.linesAreSorted(lines), "importAlphabetizer should sort dependencies correctly. output: " + actual);
+  });
+
+  it('should sort everything appropriately - 3', function() {
+      var actual = importAlphabetizer(file);
+      var lines = actual.split(NEW_LINE_CHR);
+      assert(testUtil.linesAreSorted(lines), "importAlphabetizer should sort dependencies correctly. output: " + actual);
   });
 
   it('should leave lines of code in the order they were originally in - 1', function() {
