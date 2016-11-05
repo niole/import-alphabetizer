@@ -55,7 +55,7 @@ function sortByPath(l, m) {
   return 0;
 }
 
-function sortRequires(lines) {
+function sortDependencies(lines) {
   return lines.sort(sortByPath);
 }
 
@@ -75,7 +75,7 @@ function separateImports(lines) {
 }
 
 var importUtil = {
-  sortRequires: sortRequires,
+  sortDependencies: sortDependencies,
 };
 
 module.exports = importUtil;

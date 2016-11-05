@@ -1,5 +1,9 @@
 var assert = require('assert');
 var util = require('../importUtil');
+var testUtil = require('./testUtil');
+
+var a = [1,2,3,4,5,6];
+console.log('shuffled', testUtil.shuffle(a, [], 0));
 
 describe("importUtil", function() {
   var code = [
@@ -33,9 +37,9 @@ describe("importUtil", function() {
     ];
   });
 
-  describe("#sortRequires", function() {
+  describe("#sortDependencies", function() {
     it('should sort requires by their paths', function() {
-      var actual = util.sortRequires(requires);
+      var actual = util.sortDependencies(requires);
 
       var expected = [
         "var losdf = require('aaaaa');",
@@ -49,7 +53,7 @@ describe("importUtil", function() {
     });
 
     it('should sort imports by their paths', function() {
-      var actual = util.sortRequires(imports);
+      var actual = util.sortDependencies(imports);
 
       var expected = [
         "import losdf from 'aaaaa';",
@@ -60,6 +64,22 @@ describe("importUtil", function() {
       ];
 
       assert.deepEqual(actual, expected, "should sort imports by their paths");
+  });
+
+  describe("#separateImports", function() {
+    it('should separate out code, imports, and requires', function() {
+      var file = 
+      var actual = util.separateImports(requires);
+
+      var expected = [
+        "var losdf = require('aaaaa');",
+        "var j = require('asdfKat');",
+        "var i = require('./idfm');",
+        "var p = require('nioleimport');",
+        "var z = require('./../ssdf/ff/mmm');",
+      ];
+
+      assert.deepEqual(actual, expected, "should sort requires by their paths");
     });
   });
 });
