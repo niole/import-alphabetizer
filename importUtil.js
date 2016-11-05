@@ -79,6 +79,7 @@ var importUtil = {
   separateImports: separateImports,
   isImport: isImport,
   isRequire: isRequire,
+  getPathContent: getPathContent,
 };
 
 module.exports = importUtil;
