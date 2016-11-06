@@ -7,7 +7,10 @@ var IMPORT_PATTERN = constants.IMPORT_PATTERN;
 var GET_PATH_PATTERN = constants.GET_PATH_PATTERN
 var GET_SINGLE_QUOTE_PATH_PATTERN = constants.GET_SINGLE_QUOTE_PATH_PATTERN;
 var GET_DOUBLE_QUOTE_PATH_PATTERN = constants.GET_DOUBLE_QUOTE_PATH_PATTERN;
+var GET_REL_PATH_START_PATTERN = constants.GET_REL_PATH_START_PATTERN;
 
+var getStartPattern = new RegExp(GET_REL_PATH_START_PATTERN, "i");
+var pathReplacePattern = new RegExp(GET_REL_PATH_START_PATTERN, "g");
 
 function isImport(element) {
   return IMPORT_PATTERN.test(element);
@@ -17,32 +20,45 @@ function isRequire(element) {
   return REQUIRE_PATTERN.test(element);
 }
 
-function getPathContent(acc, s) {
+function getPathContent(s) {
   if (s.length) {
-    var requirePath = s.match(GET_PATH_PATTERN);
-    var singlePath = s.match(GET_SINGLE_QUOTE_PATH_PATTERN);
-    var doublePath = s.match(GET_DOUBLE_QUOTE_PATH_PATTERN);
-    var match = requirePath || singlePath || doublePath;
+    var requirePath = getRelativePath(s);
 
-    if (match) {
-      var index = match.index;
-      var toKeep = match[1];
-      var nextIndex = index + match[0].length;
+    if (requirePath) {
+      return requirePath;
+    } else {
+      var singlePath = s.match(GET_SINGLE_QUOTE_PATH_PATTERN);
+      var doublePath = s.match(GET_DOUBLE_QUOTE_PATH_PATTERN);
+      var match = singlePath || doublePath;
 
-      acc += toKeep;
-      if (nextIndex < s.length) {
-        return getPathContent(acc, s.slice(nextIndex));
+
+      if (match) {
+        return match[1];
       }
     }
   }
 
-  return acc;
+  return "";
+}
+
+function getRelativePath(line) {
+  var path = line.match(getStartPattern);
+
+  if (path) {
+    var index = path.index;
+    if (typeof index === "number") {
+      var justPath = line.slice(index);
+      return justPath.replace(pathReplacePattern, "");
+    }
+  }
+
+  return "";
 }
 
 function sortByPath(l, m) {
   //sort by path regardless of whether require or import
-  var lContent = getPathContent("", l);
-  var mContent = getPathContent("", m);
+  var lContent = getPathContent(l);
+  var mContent = getPathContent(m);
 
   if (lContent < mContent) {
     return -1;
@@ -80,6 +96,7 @@ var importUtil = {
   isImport: isImport,
   isRequire: isRequire,
   getPathContent: getPathContent,
+  getRelativePath: getRelativePath,
 };
 
 module.exports = importUtil;

@@ -16,8 +16,8 @@ function linesAreSorted(lines) {
     if (sameRequires.length === requires.length) {
       if (imports.length > 1) {
         for (var i=1; i<imports.length; i++) {
-          var prev = util.getPathContent("", imports[i-1]);
-          var curr = util.getPathContent("", imports[i]);
+          var prev = util.getPathContent(imports[i-1]);
+          var curr = util.getPathContent(imports[i]);
           if (curr < prev) {
             return false
           }
@@ -26,8 +26,8 @@ function linesAreSorted(lines) {
 
       if (requires.length > 1) {
         for (var r=1; r<requires.length; r++) {
-          var prev = util.getPathContent("", requires[r-1]);
-          var curr = util.getPathContent("", requires[r]);
+          var prev = util.getPathContent(requires[r-1]);
+          var curr = util.getPathContent(requires[r]);
           if (curr < prev) {
             return false
           }

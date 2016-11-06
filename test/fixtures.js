@@ -4,7 +4,7 @@ var code = [
   "                         ",
   "function lmnop(a, b, c) { ",
   "                         ",
-  "console.log('herro'); ",
+  "	console.log('herro'); ",
   "                         ",
   "}                    ",
   "var y = 1+2;",
@@ -12,17 +12,21 @@ var code = [
 ];
 
 var requires = [
-  "var losdf = require('aaaaa');",
+  "var k = require('_i-dfm');",
+  'var losdf = require("aaaaa");',
   "var j = require('asdfKat');",
   "var i = require('./idfm');",
+  "var kl = require('_i-dfm/jj0000');",
   "var p = require('nioleimport');",
   "var z = require('./../ssdf/ff/mmm');",
 ];
 
 var imports = [
-  "import losdf from 'aaaaa';",
+  "import k from '_i-dfm';",
+  'import losdf from "aaaaa";',
   "import j from 'asdfKat';",
   "import i from './idfm';",
+  "import kl from '_i-dfm/jj0000';",
   "import pop from 'nioleimport';",
   "import z from './../ssdf/ff/mmm';",
 ];
