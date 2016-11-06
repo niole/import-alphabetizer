@@ -29,22 +29,14 @@ describe("alphabetizeImports", function() {
     assert(util.isImport(firstLine), "first line should be an import");
   });
 
-  it('should sort everything appropriately - 1', function() {
-      var actual = importAlphabetizer(file);
-      var lines = actual.split(NEW_LINE_CHR);
-      assert(testUtil.linesAreSorted(lines), "importAlphabetizer should sort dependencies correctly. output: " + actual);
-  });
+  it('should always give same sorted dependencies, no matter how file is shuffled', function() {
+      var file1 = importAlphabetizer(testUtil.shuffleArray(code.concat(imports, requires), [], 0).join(NEW_LINE_CHR));
+      var file2 = importAlphabetizer(testUtil.shuffleArray(code.concat(imports, requires), [], 0).join(NEW_LINE_CHR));
+      var imports1 = util.separateImports(file1.split(NEW_LINE_CHR));
+      var imports2 = util.separateImports(file2.split(NEW_LINE_CHR));
 
-  it('should sort everything appropriately - 2', function() {
-      var actual = importAlphabetizer(file);
-      var lines = actual.split(NEW_LINE_CHR);
-      assert(testUtil.linesAreSorted(lines), "importAlphabetizer should sort dependencies correctly. output: " + actual);
-  });
-
-  it('should sort everything appropriately - 3', function() {
-      var actual = importAlphabetizer(file);
-      var lines = actual.split(NEW_LINE_CHR);
-      assert(testUtil.linesAreSorted(lines), "importAlphabetizer should sort dependencies correctly. output: " + actual);
+      assert.deepEqual(imports1.imports, imports2.imports, "imports should be the same");
+      assert.deepEqual(imports1.requires, imports2.requires, "requires should be the same");
   });
 
   it('should leave lines of code in the order they were originally in - 1', function() {

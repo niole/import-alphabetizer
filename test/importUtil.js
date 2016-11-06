@@ -2,7 +2,10 @@ var assert = require('assert');
 var util = require('../importUtil');
 var testUtil = require('./testUtil');
 var fixtures = require('./fixtures');
+var constants = require('../importConstants');
 
+var GET_REL_PATH_START_PATTERN = constants.GET_REL_PATH_START_PATTERN;
+var isRelPathPattern = new RegExp(GET_REL_PATH_START_PATTERN, 'i');
 
 describe("importUtil", function() {
   var code = fixtures.code;
@@ -68,6 +71,63 @@ describe("importUtil", function() {
       var expected = fixtures.imports;
 
       assert.deepEqual(actual, expected, "should sort imports by their paths");
+    });
+
+    it('should sort absolute imports before relative', function() {
+      var actual = util.sortDependencies(imports);
+      var sawRel = false;
+      var absBeforeRel = true;
+
+      for (var i=0; i<actual.length; i++) {
+        var a = actual[i];
+        if (isRelPathPattern.test(a)) {
+          sawRel = true;
+        } else if (sawRel) {
+          //saw a rel, but now we're back to absolute. so FAIL
+          absBeforeRel = false;
+          break;
+        }
+      }
+
+      assert(absBeforeRel, "absolute imports should come before relative");
+    });
+
+    it('should sort absolute imports before relative - 2', function() {
+      var actual = util.sortDependencies(imports);
+      var sawRel = false;
+      var absBeforeRel = true;
+
+      for (var i=0; i<actual.length; i++) {
+        var a = actual[i];
+        if (isRelPathPattern.test(a)) {
+          sawRel = true;
+        } else if (sawRel) {
+          //saw a rel, but now we're back to absolute. so FAIL
+          absBeforeRel = false;
+          break;
+        }
+      }
+
+      assert(absBeforeRel, "absolute imports should come before relative");
+    });
+
+    it('should sort absolute imports before relative - 3', function() {
+      var actual = util.sortDependencies(imports);
+      var sawRel = false;
+      var absBeforeRel = true;
+
+      for (var i=0; i<actual.length; i++) {
+        var a = actual[i];
+        if (isRelPathPattern.test(a)) {
+          sawRel = true;
+        } else if (sawRel) {
+          //saw a rel, but now we're back to absolute. so FAIL
+          absBeforeRel = false;
+          break;
+        }
+      }
+
+      assert(absBeforeRel, "absolute imports should come before relative");
     });
   });
 });

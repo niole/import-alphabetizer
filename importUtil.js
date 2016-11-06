@@ -57,18 +57,30 @@ function getRelativePath(line) {
 
 function sortByPath(l, m) {
   //sort by path regardless of whether require or import
-  var lContent = getPathContent(l);
-  var mContent = getPathContent(m);
 
-  if (lContent < mContent) {
+  var lIsRelative = getStartPattern.test(l);
+  var mIsRelative = getStartPattern.test(m);
+
+  if (lIsRelative && mIsRelative || !lIsRelative && !mIsRelative) {
+    var lContent = getPathContent(l);
+    var mContent = getPathContent(m);
+
+    if (lContent < mContent) {
+      return -1;
+    }
+
+    if (lContent > mContent) {
+      return 1;
+    }
+
+    return 0;
+  } else if (lIsRelative) {
+    return 1
+  } else {
     return -1;
   }
 
-  if (lContent > mContent) {
-    return 1;
-  }
 
-  return 0;
 }
 
 function sortDependencies(lines) {
